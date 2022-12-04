@@ -1,29 +1,23 @@
 export default class Settings {
-  constructor(...rest) {
-    this.userSettings = new Map();
-    this.defaultSettings = new Map([
+  constructor(userSettings) {
+    const data = Object.entries(userSettings);
+    this.userSettings = new Map(data);
+  }
+
+  static defaults() {
+    return new Map([
       ['theme', 'dark'],
       ['music', 'trance'],
       ['difficulty', 'easy'],
     ]);
+  }
 
-    const allSettings = {
-      theme: ['dark', 'light', 'gray'],
-      music: ['trance', 'pop', 'rock', 'chillout', 'off'],
-      difficulty: ['easy', 'normal', 'hard', 'nightmare'],
-    };
-
-    rest.forEach((setting) => {
-      for (const item in setting) {
-        if (Object.prototype.hasOwnProperty.call(allSettings, item)) {
-          this.userSettings.set(item, setting[item]);
-        }
-      }
-    });
+  set(key, value) {
+    this.userSettings.set(key, value);
   }
 
   get settings() {
-    return new Map([...this.defaultSettings, ...this.userSettings]);
+    return new Map([...Settings.defaults(), ...this.userSettings]);
   }
 }
 
